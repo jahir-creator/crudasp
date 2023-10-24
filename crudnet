@@ -1,0 +1,54 @@
+CREAR UN CRUD EN ASP .NET
+
+1.- CREAR LA BASE DE DATOS CON LA CUAL VAMOS A TRABAJAR
+
+2.- ABRIR ASP.NET Y SELECCIONAR EL PROYECTO
+
+Aplicacion web de ASP.NET Core (Modelo-Vista-Controlador)
+
+agregamos el nombre al proyecto y le damos en siguiente y en crear
+
+3.- Para agregar las dependencias para mysql y entity
+Damos clic en herramientas – administrador de paquetes NuGet- Administrador de paquetes NuGet para la solucion
+
+buscamos las sisguinetes dependencias
+
+Pomelo. EntityFrameworkCore.Mysql
+y
+
+Microsoft.EntityFrameworkCore.Tools
+
+4.- Abrimos la consola de aplicaciones 
+Damos clic en herramientas – administrador de paquetes NuGet- Consola Administrador de paquetes
+
+dentro de la consola tecleamos
+
+Scaffold-DbContext “server=localhost; port=3306; database=prueba; uid=root;  password= 12345678” Pomelo. EntityFrameworkCore.Mysql -o Models
+
+esperamos a que se cree.
+
+5.-Copiamos la cadena de conexión  server=localhost; port=3306; database=prueba; uid=root;  password= 12345678 y lka pegamos en appsettings.json coloando dentro
+“ConnectionString”:{
+	“conexión”: ”server=localhost; port=3306; database=prueba; uid=root;  password= 12345678”
+}
+6.- En program.cs abajo de la linea de builder pegamos la linea de codigo service.AddContext este codigo lo sacamos de la pagina que nos da el warning
+ codigo correcto
+builder.Services.AddDbContext<CrudnetContext>(options =>
+                options.UseMySql(builder.Configuration.GetConnectionString("conexion"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.34-mysql")));
+
+6.-Crear controlador con entity
+en Controllers damos clic derecho agregar-controlador-controlador de MVC con vistas que usan Entity Framerok 
+seleccionamos el modelo  y la clase el que dice Context
+y le damos en agregar 
+
+7.-Validaciones en la carpeta Models se agregan 
+Ejemplo
+public class Usuario
+{
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
+    public string Nombre { get; set; }
+}
+y en la vista se agrega 
+ <span asp-validation-for="Nombre" class="text-danger"></span>
